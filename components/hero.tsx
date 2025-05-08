@@ -38,9 +38,9 @@ function AnimatedSphere() {
 
 export default function Hero() {
   return (
-    <div className="relative w-full min-h-screen overflow-hidden touch-none">
+    <div className="relative w-full min-h-screen">
       {/* 3D Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />

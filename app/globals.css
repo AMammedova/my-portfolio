@@ -69,29 +69,40 @@
 @layer base {
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
   }
 
   html {
     scroll-behavior: smooth;
-    height: 100%;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
   }
 
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    min-height: 100%;
-    overflow-x: hidden;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
   }
 
   #__next {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+  }
+
+  section {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
   }
 }
 

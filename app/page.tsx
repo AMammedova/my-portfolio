@@ -19,34 +19,34 @@ export default function Home() {
   const backgroundOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
 
   return (
-    <main ref={containerRef} className="relative w-full overflow-x-hidden">
+    <div className="relative w-full min-h-screen overflow-y-auto">
       <Navigation />
 
       <motion.div className="fixed inset-0 z-0 pointer-events-none" style={{ opacity: backgroundOpacity }}>
         {/* This div holds the hero background that fades out on scroll */}
       </motion.div>
 
-      <div className="flex flex-col w-full">
-        <section id="hero" className="min-h-screen w-full">
+      <main ref={containerRef} className="relative w-full">
+        <section id="hero" className="w-full">
           <Hero />
         </section>
 
-        <section id="about" className="min-h-screen w-full">
+        <section id="about" className="w-full">
           <About />
         </section>
 
-        <section id="projects" className="min-h-screen w-full bg-black/90">
+        <section id="projects" className="w-full bg-black/90">
           <Projects />
         </section>
 
-        <section id="experience" className="min-h-screen w-full bg-black/90">
+        <section id="experience" className="w-full bg-black/90">
           <Experience />
         </section>
 
-        <section id="contact" className="min-h-screen w-full bg-black/90">
+        <section id="contact" className="w-full bg-black/90">
           <Contact />
         </section>
-      </div>
-    </main>
+      </main>
+    </div>
   )
 }
