@@ -57,7 +57,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <h1 className="text-5xl md:text-7xl font-bold mb-2 gradient-text">Aisel Mamedova</h1>
+          <h1 className="text-4xl md:text-7xl font-bold mb-2 gradient-text">Aisel Mamedova</h1>
         </motion.div>
 
         <motion.div
@@ -65,8 +65,8 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <h2 className="text-xl md:text-2xl font-mono mb-6 text-white/80">
-            <span className="text-white">React</span> Developer
+          <h2 className="text-lg md:text-2xl font-mono mb-6 text-white/80">
+            <span className="text-white">React</span> & AI-Powered Frontend Developer
           </h2>
         </motion.div>
 
@@ -76,7 +76,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="max-w-md"
         >
-          <p className="text-lg text-white/70 mb-8">
+          <p className="text-md text-white/70 mb-8">
             Crafting immersive digital experiences with code, animation, and creative technology
           </p>
         </motion.div>
