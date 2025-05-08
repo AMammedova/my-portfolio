@@ -68,29 +68,26 @@
 
 @layer base {
   * {
-    @apply border-border;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  html, body {
-    height: 100%;
-    width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
   }
 
   html {
-    scroll-behavior: smooth;
+    height: 100%;
+    width: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    overflow-y: auto;
-    overscroll-behavior-y: none;
+    min-height: 100%;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   #__next {
