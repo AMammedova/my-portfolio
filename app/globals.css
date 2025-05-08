@@ -75,15 +75,23 @@
     scroll-behavior: smooth;
     height: 100%;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    height: 100%;
+    min-height: 100%;
     overflow-x: hidden;
     position: relative;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  #__next {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 }
 
