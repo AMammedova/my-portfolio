@@ -1,11 +1,12 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Sphere, MeshDistortMaterial, GradientTexture, Environment, Float } from "@react-three/drei"
 import { ChevronDown } from "lucide-react"
 import type * as THREE from "three"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 // Custom 3D component for the hero background
 function AnimatedSphere() {
@@ -37,19 +38,45 @@ function AnimatedSphere() {
 }
 
 export default function Hero() {
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+  
+  useEffect(() => {
+    const container = canvasContainerRef.current;
+    if (!container) return;
+    
+    const preventScroll = (e: TouchEvent) => {
+      // Prevent canvas from capturing all touch events
+      e.stopPropagation();
+    };
+    
+    container.addEventListener('touchmove', preventScroll, { passive: false });
+    
+    return () => {
+      container.removeEventListener('touchmove', preventScroll);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full h-screen">
-      <div className="absolute inset-0">
+    <div className="relative w-full min-h-screen">
+      <div 
+        className="absolute inset-0 touch-none" 
+        ref={canvasContainerRef}
+      >
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <AnimatedSphere />
           <Environment preset="city" />
-          <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
+          <OrbitControls 
+            enableZoom={false} 
+            enablePan={false} 
+            enableRotate={isMobile ? false : true} 
+          />
         </Canvas>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

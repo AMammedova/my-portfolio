@@ -22,7 +22,7 @@ export default function Home() {
     <>
       <Navigation />
       
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <motion.div style={{ opacity: backgroundOpacity }}>
           {/* Background content */}
         </motion.div>
