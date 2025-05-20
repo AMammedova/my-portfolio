@@ -45,22 +45,25 @@ export default function Hero() {
     const container = canvasContainerRef.current;
     if (!container) return;
     
-    const preventScroll = (e: TouchEvent) => {
-      // Prevent canvas from capturing all touch events
-      e.stopPropagation();
+    const handleTouch = (e: TouchEvent) => {
+      // Only prevent default if we're actually interacting with the canvas
+      const target = e.target as HTMLElement;
+      if (target.closest('canvas')) {
+        e.preventDefault();
+      }
     };
     
-    container.addEventListener('touchmove', preventScroll, { passive: false });
+    container.addEventListener('touchmove', handleTouch, { passive: false });
     
     return () => {
-      container.removeEventListener('touchmove', preventScroll);
+      container.removeEventListener('touchmove', handleTouch);
     };
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen">
+    <div className="relative w-full min-h-screen overflow-y-auto">
       <div 
-        className="absolute inset-0 touch-none" 
+        className="fixed inset-0 touch-none" 
         ref={canvasContainerRef}
       >
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
@@ -71,7 +74,7 @@ export default function Hero() {
           <OrbitControls 
             enableZoom={false} 
             enablePan={false} 
-            enableRotate={isMobile ? false : true} 
+            enableRotate={!isMobile}
           />
         </Canvas>
       </div>

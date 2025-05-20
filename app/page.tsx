@@ -19,16 +19,16 @@ export default function Home() {
   const backgroundOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
 
   return (
-    <>
+    <main className="relative w-full min-h-screen">
       <Navigation />
       
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <motion.div style={{ opacity: backgroundOpacity }}>
           {/* Background content */}
         </motion.div>
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 w-full">
         <div id="hero">
           <Hero />
         </div>
@@ -49,6 +49,6 @@ export default function Home() {
           <Contact />
         </div>
       </div>
-    </>
+    </main>
   )
 }

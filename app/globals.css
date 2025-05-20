@@ -78,32 +78,25 @@
     height: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    position: relative; 
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground;
     width: 100%;
-    min-height: 100%;
-    position: relative;
+    min-height: 100vh;
     overflow-x: hidden;
-    overflow-y: visible;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y; 
-  }
-
-  html {
-    scroll-behavior: smooth;
+    touch-action: pan-y;
   }
 
   #__next {
-   
-    display: flex;
-    flex-direction: column;
+    min-height: 100vh;
+    display: block;
   }
 
   section {
-   
     width: 100%;
     position: relative;
   }
