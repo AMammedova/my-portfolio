@@ -87,14 +87,14 @@ export default function Experience() {
   })
 
   return (
-    <div ref={containerRef} className="min-h-screen py-20">
+    <div ref={containerRef} className="min-h-screen py-20 relative">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold mb-16 text-center gradient-text"
+          className="text-3xl md:text-4xl font-bold mb-16 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
         >
           Experience & Education
         </motion.h2>
@@ -127,7 +127,8 @@ export default function Experience() {
                 <div className={`md:w-1/2 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
                   <motion.div
                     whileHover={{ scale: 1.02 }}
-                    className="p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-purple-500/50 transition-all"
+                    whileTap={{ scale: 0.98 }}
+                    className="p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-purple-500/50 transition-all touch-manipulation"
                   >
                     <h3 className="text-xl font-bold text-white mb-1">{exp.title}</h3>
                     <h4 className="text-lg font-medium text-purple-400 mb-2">{exp.company}</h4>

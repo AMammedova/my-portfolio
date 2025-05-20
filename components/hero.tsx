@@ -46,7 +46,6 @@ export default function Hero() {
     if (!container) return;
     
     const handleTouch = (e: TouchEvent) => {
-      // Only prevent default if we're actually interacting with the canvas
       const target = e.target as HTMLElement;
       if (target.closest('canvas')) {
         e.preventDefault();
@@ -61,9 +60,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen overflow-y-auto">
+    <div className="relative w-full min-h-screen">
       <div 
-        className="fixed inset-0 touch-none" 
+        className="absolute inset-0"
         ref={canvasContainerRef}
       >
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>

@@ -45,14 +45,14 @@ export default function Contact() {
   }
 
   return (
-    <div className="min-h-screen py-20 flex items-center">
+    <div className="min-h-screen py-20 flex items-center relative">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold mb-16 text-center gradient-text"
+          className="text-3xl md:text-4xl font-bold mb-16 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
         >
           Get In Touch
         </motion.h2>
@@ -77,7 +77,7 @@ export default function Contact() {
                 href="https://github.com/AMammedova"
                 whileHover={{ y: -5, scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-purple-500/20 border border-white/10 hover:border-purple-500/50 transition-colors"
+                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-purple-500/20 border border-white/10 hover:border-purple-500/50 transition-colors touch-manipulation"
               >
                 <Github className="w-5 h-5" />
               </motion.a>
@@ -85,7 +85,7 @@ export default function Contact() {
                 href="https://www.linkedin.com/in/aysel-mammedova/"
                 whileHover={{ y: -5, scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-purple-500/20 border border-white/10 hover:border-purple-500/50 transition-colors"
+                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-purple-500/20 border border-white/10 hover:border-purple-500/50 transition-colors touch-manipulation"
               >
                 <Linkedin className="w-5 h-5" />
               </motion.a>
@@ -143,7 +143,7 @@ export default function Contact() {
                       id="name"
                       name="name"
                       required
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/50 focus:border-purple-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/50 focus:border-purple-500 touch-manipulation"
                       placeholder="Your Name"
                       value={formData.name}
                       onChange={handleChange}
@@ -158,7 +158,7 @@ export default function Contact() {
                       name="email"
                       type="email"
                       required
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/50 focus:border-purple-500"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/50 focus:border-purple-500 touch-manipulation"
                       placeholder="yourname@example.com"
                       value={formData.email}
                       onChange={handleChange}
@@ -172,7 +172,7 @@ export default function Contact() {
                       id="message"
                       name="message"
                       required
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/50 focus:border-purple-500 min-h-[120px]"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/50 focus:border-purple-500 min-h-[120px] touch-manipulation"
                       placeholder="Hello, I'd like to talk about..."
                       value={formData.message}
                       onChange={handleChange}
@@ -180,7 +180,7 @@ export default function Contact() {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3 rounded-lg transition-all"
+                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3 rounded-lg transition-all touch-manipulation"
                     disabled={isSubmitting}
                   >
                     <span className="flex items-center justify-center">

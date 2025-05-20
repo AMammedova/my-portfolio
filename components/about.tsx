@@ -110,19 +110,20 @@ const InteractiveBlob = ({ color, initialPosition, delay = 0 }: BlobProps) => {
     }
 
     const handleTouchMove = (event: TouchEvent) => {
-      event.preventDefault() // Prevent scrolling while touching blobs
       const touch = event.touches[0]
-      handleInteraction(touch.clientX, touch.clientY)
+      const target = event.target as HTMLElement
+      if (target.closest('.blob-container')) {
+        event.preventDefault()
+        handleInteraction(touch.clientX, touch.clientY)
+      }
     }
 
     const handleTouchEnd = () => {
-      // Reset blob position when touch ends
       mouseX.set(0)
       mouseY.set(0)
       scale.set(1)
     }
 
-    // Add both mouse and touch event listeners
     window.addEventListener("mousemove", handleMouseMove)
     window.addEventListener("touchmove", handleTouchMove, { passive: false })
     window.addEventListener("touchend", handleTouchEnd)
@@ -137,7 +138,7 @@ const InteractiveBlob = ({ color, initialPosition, delay = 0 }: BlobProps) => {
   return (
     <motion.div
       ref={blobRef}
-      className={`absolute w-[30rem] h-[30rem] rounded-full filter blur-3xl opacity-15 ${color} touch-none`}
+      className={`absolute w-[30rem] h-[30rem] rounded-full filter blur-3xl opacity-15 ${color} blob-container`}
       style={{
         x,
         y,
@@ -151,9 +152,12 @@ const InteractiveBlob = ({ color, initialPosition, delay = 0 }: BlobProps) => {
       }}
       whileHover={{ opacity: 0.25 }}
       onTouchStart={(e) => {
-        e.preventDefault()
-        const touch = e.touches[0]
-        handleInteraction(touch.clientX, touch.clientY)
+        const target = e.target as HTMLElement
+        if (target.closest('.blob-container')) {
+          e.preventDefault()
+          const touch = e.touches[0]
+          handleInteraction(touch.clientX, touch.clientY)
+        }
       }}
     >
       <motion.div
