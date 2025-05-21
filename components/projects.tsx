@@ -1,18 +1,28 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, ExternalLink, Github, MapPin, MessageCircle, CreditCard, QrCode } from "lucide-react"
+import {
+  X,
+  ExternalLink,
+  Github,
+  MapPin,
+  MessageCircle,
+  CreditCard,
+  QrCode,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react"
 
 interface Project {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  image: string;
-  link: string;
-  github?: string;
-  images: string[]; // array of image URLs
+  id: number
+  title: string
+  description: string
+  tags: string[]
+  image: string
+  link: string
+  github?: string
+  images: string[]
 }
 
 // Project data based on CV
@@ -25,12 +35,7 @@ const projects: Project[] = [
     tags: ["React", "Next.js", "API Integration", "Responsive UI"],
     image: "/placeholder.svg?height=600&width=800",
     link: "https://inloya.com/",
-    images: [
-      "/in-1.png",
-      "/in-2.png",
-      "/in-3.png",
-
-    ],
+    images: ["/in-1.png", "/in-2.png", "/in-3.png"],
   },
   {
     id: 2,
@@ -40,12 +45,7 @@ const projects: Project[] = [
     tags: ["React", "Next.js", "Zustand", "Admin Panel"],
     image: "/placeholder.svg?height=600&width=800",
     link: "#",
-    images: [
-      "/mc-3.png",
-      "/mc-1.png",
-      "/mc-2.png",
-
-    ],
+    images: ["/mc-3.png", "/mc-1.png", "/mc-2.png"],
   },
   {
     id: 3,
@@ -55,10 +55,7 @@ const projects: Project[] = [
     tags: ["React", "Google Maps API", "Location Tracking"],
     image: "/placeholder.svg?height=600&width=800",
     link: "#",
-    images: [
-      "/ms-1.png",
-      "/ms-2.png"
-    ],
+    images: ["/ms-1.png", "/ms-2.png"],
   },
   {
     id: 4,
@@ -68,9 +65,7 @@ const projects: Project[] = [
     tags: ["React", "Next.js", "SignalR", "Real-time"],
     image: "/placeholder.svg?height=600&width=800",
     link: "#",
-    images: [
-      "/chat-1.png",
-    ],
+    images: ["/chat-1.png"],
   },
   {
     id: 5,
@@ -80,9 +75,7 @@ const projects: Project[] = [
     tags: ["React", "Next.js", "SCSS", "Content Management"],
     image: "/placeholder.svg?height=600&width=800",
     link: "https://vitanur.com/",
-    images: [
-      "/vita-1.png",
-    ],
+    images: ["/vita-1.png"],
   },
   {
     id: 6,
@@ -92,64 +85,73 @@ const projects: Project[] = [
     tags: ["Next.js", "Tailwind CSS", "QR Code", "vCard"],
     image: "/placeholder.svg?height=600&width=800",
     link: "https://vcard.grandmart.az:6003/az/profile/1018",
-    images: [
-      "/vc-1.png",
-    ],
+    images: ["/vcard1.png", "/vcard2.png"],
   },
   {
     id: 7,
     title: "Residential Complex Management System (Startup)",
     description:
       "A comprehensive management system for residential complexes, built as a startup. Includes all features needed for efficient administration: resident and staff management, parking management, communication tools (chatbot, complaints, suggestions),  announcements, and more. Enables seamless interaction between residents and management.",
-    tags: [
-      "React",
-      "Next.js",
-      "Real-time Chat",
-      "SignalR"
-    ],
+    tags: ["React", "Next.js", "Real-time Chat", "SignalR"],
     image: "/placeholder.svg?height=600&width=800",
     link: "#",
-    images: [
-      "/mtk-1.png",
-      "/mtk-2.png"
-    ],
+    images: ["/mtk-1.png", "/mtk-2.png"],
   },
 ]
 
-// Filter categories based on project tags
-const allTags = Array.from(new Set(projects.flatMap((project) => project.tags)))
-const filters = ["All", ...allTags]
-
 // Icons for projects based on their type
 const getProjectIcon = (title: string) => {
-  if (title.includes("Telegram")) return <MessageCircle className="text-blue-400" size={24} />;
-  if (title.includes("Tracking")) return <MapPin className="text-red-400" size={24} />;
-  if (title.includes("Promo Code")) return <CreditCard className="text-yellow-400" size={24} />;
-  if (title.includes("Business Card")) return <QrCode className="text-green-400" size={24} />;
-  return null;
+  if (title.includes("Telegram")) return <MessageCircle className="text-blue-400" size={24} />
+  if (title.includes("Tracking")) return <MapPin className="text-red-400" size={24} />
+  if (title.includes("Promo Code")) return <CreditCard className="text-yellow-400" size={24} />
+  if (title.includes("Business Card")) return <QrCode className="text-green-400" size={24} />
+  return null
 }
 
-export default function Projects() {
-  const [activeFilter, setActiveFilter] = useState<string>("All")
+export default function AnimatedCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-  const [sliderIndexes, setSliderIndexes] = useState<{ [id: number]: number }>({})
   const [modalSliderIdx, setModalSliderIdx] = useState(0)
+  const [autoRotate, setAutoRotate] = useState(true)
+  const autoRotateIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
+  // Handle auto-rotation
+  useEffect(() => {
+    if (autoRotate) {
+      autoRotateIntervalRef.current = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % projects.length)
+      }, 5000)
+    } else if (autoRotateIntervalRef.current) {
+      clearInterval(autoRotateIntervalRef.current)
+    }
+
+    return () => {
+      if (autoRotateIntervalRef.current) {
+        clearInterval(autoRotateIntervalRef.current)
+      }
+    }
+  }, [autoRotate])
+
+  // Stop auto-rotation when a project is selected
+  useEffect(() => {
+    if (selectedProject) {
+      setAutoRotate(false)
+    }
+  }, [selectedProject])
+
+  // Reset modal slider index when selected project changes
   useEffect(() => {
     setModalSliderIdx(0)
   }, [selectedProject])
 
-  const filteredProjects =
-    activeFilter === "All" ? projects : projects.filter((project) => project.tags.includes(activeFilter))
+  const handlePrevious = () => {
+    setActiveIndex((prev) => (prev - 1 + projects.length) % projects.length)
+    setAutoRotate(false)
+  }
 
-  const handleSlider = (projectId: number, dir: "prev" | "next", imagesLength: number) => {
-    setSliderIndexes((prev) => {
-      const current = prev[projectId] || 0
-      let nextIdx = dir === "next" ? current + 1 : current - 1
-      if (nextIdx < 0) nextIdx = imagesLength - 1
-      if (nextIdx >= imagesLength) nextIdx = 0
-      return { ...prev, [projectId]: nextIdx }
-    })
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % projects.length)
+    setAutoRotate(false)
   }
 
   const handleModalSlider = (dir: "prev" | "next", imagesLength: number) => {
@@ -162,105 +164,133 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen py-20 relative">
-      <div className="container mx-auto px-4">
+    <div className="relative">
+      <div className="px-4 md:container mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-bold mb-16 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
+          className="text-4xl md:text-5xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
         >
           Featured Projects
         </motion.h2>
 
-        {/* Filter Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
-        >
-          {filters.map((filter) => (
-            <motion.button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeFilter === filter
-                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/20"
-                  : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
-              }`}
-            >
-              {filter}
-            </motion.button>
-          ))}
-        </motion.div>
+        {/* Carousel Container */}
+        <div className="relative">
+          <div
+            className="w-full h-[680px] mb-4 rounded-xl overflow-hidden border border-white/10 relative"
+         
+          >
+            {/* Subtle gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 to-pink-900/10"></div>
 
-        {/* Project Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project, index) => {
-            const currentIdx = sliderIndexes[project.id] || 0
-            const hasMultiple = project.images.length > 1
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-                className="group bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-purple-500/20"
-                onClick={() => setSelectedProject(project)}
+            {/* Project Carousel */}
+            <div className="relative h-full flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0 flex flex-col items-center justify-center px-4"
+                >
+                  {/* Project Image */}
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="w-full max-w-3xl h-64 md:h-80 mb-8 overflow-hidden rounded-2xl shadow-2xl shadow-purple-500/30 relative"
+                  >
+                    <img
+                      src={projects[activeIndex].images[0] || "/placeholder.svg"}
+                      alt={projects[activeIndex].title}
+                      className="w-full h-full object-cover object-center transition-transform duration-700"
+                      style={{ filter: "brightness(0.95) contrast(1.08)" }}
+                    />
+                    {/* Gradient overlay for better text contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+                  </motion.div>
+
+                  {/* Project Info */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="text-center max-w-2xl" // Added margin bottom to create space for pagination
+                  >
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{projects[activeIndex].title}</h3>
+                    <p className="text-white/80 text-sm md:text-base mb-6 line-clamp-3">
+                      {projects[activeIndex].description}
+                    </p>
+                    <button
+                      onClick={() => setSelectedProject(projects[activeIndex])}
+                      className="px-6 py-3 mb-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-medium hover:from-purple-600 hover:to-pink-600 transition-colors duration-300 shadow-lg shadow-purple-500/20"
+                    >
+                      View Details
+                    </button>
+                  </motion.div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Carousel controls */}
+              <button
+                onClick={handlePrevious}
+                className="absolute left-1 top-[90%] md:left-6 top-[60%] md:top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-purple-500/50 transition-colors duration-300 z-10"
               >
-                {/* Image Slider */}
-                <div className="relative h-56 bg-white flex items-center justify-center">
-                  <img
-                    src={project.images[currentIdx]}
-                    alt={project.title + ' image'}
-                    className="object-cover h-full w-full"
+                <ChevronLeft size={24} />
+              </button>
+
+              <button
+                onClick={handleNext}
+                className="absolute right-1 top-[90%] md:right-6 top-[60%] md:top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-purple-500/50 transition-colors duration-300 z-10"
+              >
+                <ChevronRight size={24} />
+              </button>
+
+              {/* Auto-rotate toggle */}
+              <button
+                onClick={() => setAutoRotate(!autoRotate)}
+                className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm backdrop-blur-sm transition-colors duration-300 z-10 ${
+                  autoRotate ? "bg-purple-500/50 text-white" : "bg-black/30 text-white/70 hover:bg-white/20"
+                }`}
+              >
+                Auto-Rotate: {autoRotate ? "On" : "Off"}
+              </button>
+
+              {/* Indicator dots - moved to bottom of container */}
+              <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-10">
+                {projects.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setActiveIndex(index)
+                      setAutoRotate(false)
+                    }}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === activeIndex ? "bg-purple-500 scale-125" : "bg-white/30 hover:bg-white/50"
+                    }`}
                   />
-                  {hasMultiple && (
-                    <>
-                      <button
-                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1 hover:bg-black/70 z-10"
-                        onClick={e => { e.stopPropagation(); handleSlider(project.id, 'prev', project.images.length) }}
-                      >
-                        &#8592;
-                      </button>
-                      <button
-                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1 hover:bg-black/70 z-10"
-                        onClick={e => { e.stopPropagation(); handleSlider(project.id, 'next', project.images.length) }}
-                      >
-                        &#8594;
-                      </button>
-                    </>
-                  )}
-                  {hasMultiple && (
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                      {project.images.map((_, i) => (
-                        <span key={i} className={`w-2 h-2 rounded-full ${i === currentIdx ? 'bg-purple-500' : 'bg-white/30'}`}></span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                {/* Card Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors duration-300">{project.title}</h3>
-                  <p className="text-white/70 text-sm mb-4 line-clamp-2">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="px-3 py-1 bg-white/10 rounded-full text-xs text-white/70 group-hover:bg-purple-500/20 group-hover:text-purple-300 transition-colors duration-300">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            )
-          })}
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Project tags display */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {projects[activeIndex].tags.map((tag) => (
+            <motion.span
+              key={tag}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className="px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full text-sm text-white/70"
+            >
+              {tag}
+            </motion.span>
+          ))}
         </div>
       </div>
 
@@ -287,27 +317,36 @@ export default function Projects() {
                 {selectedProject.images && selectedProject.images.length > 0 && (
                   <>
                     <img
-                      src={selectedProject.images[modalSliderIdx]}
-                      alt={selectedProject.title + ' image'}
+                      src={selectedProject.images[modalSliderIdx] || "/placeholder.svg"}
+                      alt={selectedProject.title + " image"}
                       className="object-cover h-full w-full"
                     />
                     {selectedProject.images.length > 1 && (
                       <>
                         <button
-                          className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1 hover:bg-black/70 z-10"
-                          onClick={e => { e.stopPropagation(); handleModalSlider('prev', selectedProject.images.length) }}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/70 z-10"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleModalSlider("prev", selectedProject.images.length)
+                          }}
                         >
-                          &#8592;
+                          <ChevronLeft size={24} />
                         </button>
                         <button
-                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1 hover:bg-black/70 z-10"
-                          onClick={e => { e.stopPropagation(); handleModalSlider('next', selectedProject.images.length) }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/70 z-10"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleModalSlider("next", selectedProject.images.length)
+                          }}
                         >
-                          &#8594;
+                          <ChevronRight size={24} />
                         </button>
                         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
                           {selectedProject.images.map((_, i) => (
-                            <span key={i} className={`w-2 h-2 rounded-full ${i === modalSliderIdx ? 'bg-purple-500' : 'bg-white/30'}`}></span>
+                            <span
+                              key={i}
+                              className={`w-2 h-2 rounded-full ${i === modalSliderIdx ? "bg-purple-500" : "bg-white/30"}`}
+                            ></span>
                           ))}
                         </div>
                       </>
@@ -333,7 +372,10 @@ export default function Projects() {
 
                 <div className="flex flex-wrap gap-2 mb-8">
                   {selectedProject.tags.map((tag) => (
-                    <span key={tag} className="px-4 py-2 bg-white/10 rounded-full text-sm text-white/70 hover:bg-purple-500/20 hover:text-purple-300 transition-colors duration-300">
+                    <span
+                      key={tag}
+                      className="px-4 py-2 bg-white/10 rounded-full text-sm text-white/70 hover:bg-purple-500/20 hover:text-purple-300 transition-colors duration-300"
+                    >
                       {tag}
                     </span>
                   ))}
