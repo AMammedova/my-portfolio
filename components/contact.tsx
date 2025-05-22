@@ -180,6 +180,7 @@ export default function Contact() {
                   </div>
                   <Button
                     type="submit"
+                    data-event="contact_click"
                     className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3 rounded-lg transition-all touch-manipulation"
                     disabled={isSubmitting}
                   >

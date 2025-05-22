@@ -85,7 +85,7 @@ const projects: Project[] = [
     tags: ["Next.js", "Tailwind CSS", "QR Code", "vCard"],
     image: "/placeholder.svg?height=600&width=800",
     link: "https://vcard.grandmart.az:6003/az/profile/1018",
-    images: ["/vcard1.png", "/vcard2.png"],
+    images: ["/vcard3.png", "/vcard2.png"],
   },
   {
     id: 7,

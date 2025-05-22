@@ -257,6 +257,7 @@ export default function About() {
             className="mt-6"
           >
             <a
+            data-event="download_cv"
               href="/Aisel Mamedova Resume.pdf"
               download
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
