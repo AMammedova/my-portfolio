@@ -18,14 +18,13 @@ type Props = {
 export default function HomeShell({ posts }: Props) {
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
+    container: containerRef,
   })
 
   const backgroundOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
 
   return (
-    <main className="relative w-full min-h-screen overflow-y-auto">
+    <main ref={containerRef} className="relative w-full min-h-screen overflow-y-auto">
       <Navigation />
 
       <div className="fixed inset-0 z-0 pointer-events-none">
