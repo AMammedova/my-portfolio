@@ -18,8 +18,8 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Creative Developer Portfolio",
-  description: "A highly visual and interactive portfolio for a creative frontend developer",
+  title: "Aisel Mamedova",
+  description: "A highly visual and interactive portfolio",
     generator: 'v0.dev'
 }
 
