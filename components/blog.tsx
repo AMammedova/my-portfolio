@@ -1,155 +1,159 @@
 "use client"
 
+import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowUpRight, BookOpen, Calendar, Clock, Tag as TagIcon } from "lucide-react"
+import type { BlogMeta } from "@/lib/blog"
+import { formatDateAz, estimateReadAz } from "@/lib/utils"
 
-const blogPosts = [
-  {
-    id: 1,
-    title: "Building Responsive UIs with Tailwind CSS",
-    excerpt: "Learn how to create beautiful, responsive user interfaces using Tailwind CSS utility classes.",
-    category: "Frontend",
-    date: "April 15, 2024",
-    image: "/placeholder.svg?height=400&width=600",
-  },
-  {
-    id: 2,
-    title: "State Management Patterns in React Applications",
-    excerpt: "Explore different state management approaches in React and when to use each one.",
-    category: "React",
-    date: "March 22, 2024",
-    image: "/placeholder.svg?height=400&width=600",
-  },
-  {
-    id: 3,
-    title: "Optimizing Next.js Applications for Performance",
-    excerpt: "Practical techniques to improve loading times and overall performance in Next.js apps.",
-    category: "Performance",
-    date: "February 10, 2024",
-    image: "/placeholder.svg?height=400&width=600",
-  },
-  {
-    id: 4,
-    title: "Creating Accessible Web Forms: A Complete Guide",
-    excerpt: "Best practices for building forms that everyone can use, regardless of ability.",
-    category: "Accessibility",
-    date: "January 28, 2024",
-    image: "/placeholder.svg?height=400&width=600",
-  },
-]
+const cardMotion = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.5 },
+}
 
-export default function Blog() {
+type Props = {
+  posts: BlogMeta[]
+}
+
+export default function Blog({ posts }: Props) {
+  if (!posts?.length) return null
+
+  const [featured, ...rest] = posts
+
   return (
-    <section id="blog" className="py-20 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-            Blog & Case Studies
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Insights, tutorials, and case studies from my experience as a frontend developer.
-          </p>
-        </motion.div>
+    <section id="blog" className="relative py-20 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(139,92,246,0.12),transparent_25%),radial-gradient(circle_at_80%_0%,rgba(236,72,153,0.1),transparent_25%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.1),transparent_30%)]" />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Featured Post */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="md:col-span-2 bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg"
-          >
-            <div className="md:flex">
-              <div className="md:w-1/2">
-                <img
-                  src="/placeholder.svg?height=600&width=800"
-                  alt="Featured blog post"
-                  className="w-full h-64 md:h-full object-cover"
-                />
-              </div>
-              <div className="md:w-1/2 p-8 flex flex-col justify-center">
-                <span className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-full text-sm font-medium mb-4">
-                  Featured
-                </span>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
-                  The Evolution of Frontend Development: Trends for 2025
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  An in-depth look at how frontend development has evolved over the years and what trends we can expect
-                  to see in 2025. Covering everything from new frameworks to design patterns and performance
-                  optimization techniques.
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">May 5, 2024</span>
-                  <a
-                    href="#"
-                    className="flex items-center text-purple-600 dark:text-purple-400 font-medium hover:text-purple-700 dark:hover:text-purple-300"
-                  >
-                    Read Article <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Regular Posts */}
-          {blogPosts.map((post, index) => (
-            <motion.div
-              key={post.id}
+      <div className="container mx-auto px-4 relative z-10 space-y-10">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-5xl mx-auto text-center md:text-left">
+          <div className="space-y-3 max-w-3xl mx-auto md:mx-0">
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
+              className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
             >
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={post.image || "/placeholder.svg"}
-                  alt={post.title}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs">
-                    {post.category}
-                  </span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{post.date}</span>
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">{post.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">{post.excerpt}</p>
-                <a
-                  href="#"
-                  className="flex items-center text-purple-600 dark:text-purple-400 font-medium hover:text-purple-700 dark:hover:text-purple-300"
-                >
-                  Read Article <ArrowRight className="ml-1 h-4 w-4" />
-                </a>
-              </div>
-            </motion.div>
-          ))}
+              Blog & Notes
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              viewport={{ once: true }}
+              className="text-white/70 text-lg"
+            >
+
+            </motion.p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="flex justify-center md:justify-end"
+          >
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 text-white border border-white/15 hover:border-purple-300/50 hover:bg-white/15 transition-all duration-300 shadow-lg shadow-purple-500/20"
+            >
+              All posts
+              <ArrowUpRight size={18} />
+            </Link>
+          </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <a
-            href="#"
-            className="inline-flex items-center px-6 py-3 bg-white dark:bg-gray-800 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-700 rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
+        <div className="grid gap-6 lg:grid-cols-3">
+          <motion.a
+            {...cardMotion}
+            className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-purple-600/80 via-purple-500/60 to-pink-500/60 p-[1px] shadow-2xl shadow-purple-500/20 hover:shadow-purple-400/40 transition-all duration-300 lg:col-span-2"
+            href={`/blog/${featured.slug}`}
           >
-            View All Articles <ArrowRight className="ml-2 h-4 w-4" />
-          </a>
-        </motion.div>
+            <div className="relative h-full w-full rounded-2xl bg-black/60 p-6 md:p-8">
+              <div className="flex items-center gap-2 text-sm text-white/70 mb-4">
+                <BookOpen size={18} />
+                <span>Featured post</span>
+              </div>
+              <div className="flex flex-col gap-6">
+                <div className="space-y-3">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-purple-50 transition-colors">
+                    {featured.title}
+                  </h3>
+                  <p className="text-white/75 md:text-lg">{featured.summary}</p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {featured.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full bg-white/10 text-white/80 border border-white/10"
+                    >
+                      <TagIcon size={14} />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between text-sm text-white/70">
+                  <div className="flex items-center gap-4">
+                    <span className="inline-flex items-center gap-1">
+                      <Calendar size={16} />
+                      {formatDateAz(featured.date)}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <Clock size={16} />
+                      {estimateReadAz(featured.summary)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-purple-100">
+                    Oxu
+                    <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </div>
+                </div>
+              </div>
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl opacity-60 group-hover:opacity-90 transition-opacity" />
+            </div>
+          </motion.a>
+
+          {rest.map((article, idx) => (
+            <motion.a
+              key={article.slug}
+              {...cardMotion}
+              transition={{ duration: 0.45, delay: idx * 0.05 }}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 hover:border-purple-400/40 hover:shadow-lg hover:shadow-purple-500/15 transition-all duration-300"
+              href={`/blog/${article.slug}`}
+            >
+              <div className="flex items-center justify-between mb-3 text-xs text-white/60">
+                <span className="inline-flex items-center gap-1">
+                  <Calendar size={14} />
+                  {formatDateAz(article.date)}
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <Clock size={14} />
+                  {estimateReadAz(article.summary)}
+                </span>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-100 transition-colors">
+                {article.title}
+              </h3>
+              <p className="text-white/70 text-sm mb-4 line-clamp-3">{article.summary}</p>
+              <div className="flex flex-wrap gap-2">
+                {article.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2.5 py-1 rounded-full bg-white/5 border border-white/5 text-xs text-white/70 group-hover:border-purple-400/40 transition-colors"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div className="absolute inset-x-0 bottom-0 h-1 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-purple-500 to-pink-500 transition-opacity duration-300" />
+            </motion.a>
+          ))}
+        </div>
       </div>
     </section>
   )

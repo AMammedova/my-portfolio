@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { motion, useScroll } from "framer-motion"
 import { Briefcase, GraduationCap, Calendar, MapPin } from "lucide-react"
 
@@ -80,6 +80,7 @@ const experiences = [
 
 export default function Experience() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [modalExp, setModalExp] = useState<null | typeof experiences[0]>(null)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -144,7 +145,15 @@ export default function Experience() {
                       </div>
                     </div>
 
-                    <p className="text-white/80">{exp.description}</p>
+                    <p className="text-white/80 line-clamp-3">{exp.description}</p>
+                    {exp.description.length > 120 && (
+                      <button
+                        className="mt-2 text-sm text-purple-400 hover:underline"
+                        onClick={() => setModalExp(exp)}
+                      >
+                        Daha ətraflı
+                      </button>
+                    )}
                   </motion.div>
                 </div>
               </motion.div>
@@ -152,6 +161,28 @@ export default function Experience() {
           </div>
         </div>
       </div>
+      {modalExp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setModalExp(null)}>
+          <div className="relative bg-gray-900 border border-purple-500 rounded-2xl p-6 w-full max-w-xl mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <button className="absolute top-2 right-2 p-1 text-purple-400 hover:text-pink-400" onClick={() => setModalExp(null)}>✕</button>
+            <h3 className="text-2xl font-bold text-white mb-2">{modalExp.title}</h3>
+            <h4 className="text-lg font-medium text-purple-400 mb-2">{modalExp.company}</h4>
+            <div className="flex flex-wrap items-center text-sm text-white/60 mb-4 gap-4">
+                <div className="flex items-center">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  {modalExp.location}
+                </div>
+                <div className="flex items-center">
+                  <Calendar className="h-4 w-4 mr-1" />
+                  {modalExp.period}
+                </div>
+            </div>
+            <p className="text-white/90 whitespace-pre-line">
+              {modalExp.description}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

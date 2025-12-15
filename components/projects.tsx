@@ -164,7 +164,7 @@ export default function AnimatedCarousel() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative py-10">
       <div className="px-4 md:container mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
